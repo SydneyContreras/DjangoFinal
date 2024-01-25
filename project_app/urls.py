@@ -5,8 +5,8 @@ from project_app.views import AppointmentsDetailView # Assuming AppointmentsDeta
 urlpatterns = [
     path('', views.index, name='index'),
     path('appointment/', views.appointment, name='appointment'),
-    path('view/', views.view, name='view'),
+    path('view/', views.appointmentListView.as_view(), name='view'),
     path('appointmentsdetail/<int:pk>/', AppointmentsDetailView.as_view(), name='appointmentsdetail'),
-    path('post/new/', views.post_new, name='post_new'),
+    path('post/new/', views.CreatePostView.as_view(), name='post_new'),
     path('view/<int:pk>/remove/', views.appoint_remove, name='appoint_remove'),
 ]

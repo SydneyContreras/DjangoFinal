@@ -43,7 +43,13 @@
   </tbody>
  
 </table>
+<div>
+  {% include 'appointment_files/includes/pagination.html' %}
+</div>
+<a class="btn btn-primary btn-md" href="{% url 'post_new' %}" role="button">Create an Appointment</a>
+
 <a class="btn btn-primary btn-md" href="/" role="button">Back To Homepage</a>
+
 </body>
 </html>
 

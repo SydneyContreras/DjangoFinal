@@ -4,6 +4,13 @@ from django.views.generic import DetailView
 from project_app.models import appointments
 from .forms import appointmentForm
 from django.http import HttpResponse
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from django.views.generic.list import ListView
+
+
+
+
 
 class AppointmentsDetailView(DetailView):
     template_name = 'appointment_files/view_appointment.html'
@@ -20,18 +27,22 @@ def index(request):
 def appointment(request):
     return render(request, 'appointment_files/appointment.html')
 
-def view(request):
-    data = appointments.objects.all()
-    return TemplateResponse(request, 'appointment_files/view.html', {"data": data})
-def post_new(request):
-    if request.method == "POST":
-        form = appointmentForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return redirect('appointmentsdetail', pk=post.pk)
-        else:
-            return render(request, 'appointment_files/appointments_form.html', {'form': form})
-    else:
-        form = appointmentForm()
-        return render(request, 'appointment_files/appointments_form.html', {'form': form})
+class appointmentListView(ListView):
+    template_name = 'appointment_files/view.html'
+    model = appointments
+    paginate_by = 5
+    context_object_name = 'data'
+    
+class CreatePostView(CreateView):
+    model = appointments
+    form_class = appointmentForm
+    template_name = 'appointment_files/appointments_form.html'
+    success_url = reverse_lazy('view')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        return response
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        return response
